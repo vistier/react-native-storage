@@ -183,9 +183,9 @@ export default class Storage {
     let { key } = params;
     if(this.enableCache && this.cache[key] !== undefined) {
       ret = this.cache[key];
-      return this._loadGlobalItem({ ret, ...params });
+      return this._loadGlobalItem(Object.assign(ret, params));
     }
-    return this.getItem(key).then(ret => this._loadGlobalItem({ ret, ...params }));
+    return this.getItem(key).then(ret => this._loadGlobalItem(Object.assign(ret, params)));
   }
   _loadGlobalItem(params) {
     let { key, ret, autoSync, syncInBackground, syncParams } = params;
@@ -260,12 +260,12 @@ export default class Storage {
     let newId = this._getId(key, id);
     if(this.enableCache && this.cache[newId]) {
       ret = this.cache[newId];
-      return this._loadMapItem( {ret, ...params } );
+      return this._loadMapItem(Object.assign(ret, params));
     }
     if(m[newId] !== undefined) {
-      return this.getItem('map_' + m[newId]).then( ret => this._loadMapItem( {ret, ...params } ) );
+      return this.getItem('map_' + m[newId]).then( ret => this._loadMapItem(Object.assign(ret, params)) );
     }
-    return this._noItemFound( {ret, ...params } );
+    return this._noItemFound(Object.assign(ret, params));
   }
   remove(params) {
     return this._mapPromise.then(() => {
